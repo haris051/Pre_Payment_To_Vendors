@@ -24,9 +24,9 @@ BEGIN
 									WHEN E.PAYMENT_SENT_ID IS NULL THEN NULL
 									ELSE E.PAYPAL_TRANSACTION_ID
 							   END ''Reference'',
-							   Round(SUM(E.AMOUNT),2) AS ''Amount'',
-							   Round(SUM(E.FORM_AMOUNT),2) AS ''Net Amount'',
-							   Round(SUM(E.FORM_AMOUNT),2) AS ''Amount Due'',
+							   Round(cast(SUM(E.AMOUNT) as Decimal(22,2)),2) AS ''Amount'',
+							   Round(cast(SUM(E.FORM_AMOUNT) as Decimal(22,2)),2) AS ''Net Amount'',
+							   Round(cast(SUM(E.FORM_AMOUNT) as Decimal(22,2)),2) AS ''Amount Due'',
 							   CASE
 									WHEN E.PAYMENT_SENT_ID IS NULL THEN NULL
 									ELSE E.TERM_NAME
@@ -39,11 +39,11 @@ BEGIN
 									WHEN E.PAYMENT_SENT_ID IS NULL THEN NULL
 									ELSE E.AGE
 							   END ''Age'',
-							   Round(SUM(E.RANGE_1),2) AS ''0 - 30'',
-							   Round(SUM(E.RANGE_2),2) AS ''31 - 60'',
-							   Round(SUM(E.RANGE_3),2) AS ''61 - 90'',
-							   Round(SUM(E.RANGE_4),2) AS ''Over 90 Days'',
-							   Round((SUM(IFNULL(E.RANGE_1, 0)) + SUM(IFNULL(E.RANGE_2, 0)) + SUM(IFNULL(E.RANGE_3, 0)) + SUM(IFNULL(E.RANGE_4, 0))),2) AS TOTAL,
+							   Round(cast(SUM(E.RANGE_1) as Decimal(22,2)),2) AS ''0 - 30'',
+							   Round(cast(SUM(E.RANGE_2) as Decimal(22,2)),2) AS ''31 - 60'',
+							   Round(cast(SUM(E.RANGE_3) as Decimal(22,2)),2) AS ''61 - 90'',
+							   Round(cast(SUM(E.RANGE_4) as Decimal(22,2)),2) AS ''Over 90 Days'',
+							   Round(cast((SUM(IFNULL(E.RANGE_1, 0)) + SUM(IFNULL(E.RANGE_2, 0)) + SUM(IFNULL(E.RANGE_3, 0)) + SUM(IFNULL(E.RANGE_4, 0))) as Decimal(22,2)),2) AS TOTAL,
                                COUNT(*) OVER() AS TOTAL_ROWS
 						  FROM (SELECT B.VENDOR_ID,
 									   C.PS_ENTRY_DATE,
